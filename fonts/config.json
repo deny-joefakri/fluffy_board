@@ -101,6 +101,12 @@
       "css": "location_arrow",
       "code": 61732,
       "src": "fontawesome5"
+    },
+    {
+      "uid": "87f4758ee5aa9b99e6a61d8460413fee",
+      "css": "language",
+      "code": 59399,
+      "src": "material"
     }
   ]
 }

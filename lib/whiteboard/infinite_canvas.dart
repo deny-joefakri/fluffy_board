@@ -367,6 +367,8 @@ class _InfiniteCanvasPageState extends State<InfiniteCanvasPage> {
           break;
         case SelectedTool.background:
           break;
+        case SelectedTool.customtabs:
+          break;
         case SelectedTool.eraser:
           if (widget.stylusOnly && !stylus) return;
           int removeIndex = -1;

@@ -21,13 +21,15 @@ class Dashboard extends StatefulWidget {
           child: SingleChildScrollView(
         child: Column(
           children: [
-            isDarkModeOn ? Image.asset(
-              "assets/images/FluffyBoardIconDark.png",
-              height: 300,
-            ) : Image.asset(
-              "assets/images/FluffyBoardIcon.png",
-              height: 300,
-            ),
+            isDarkModeOn
+                ? Image.asset(
+                    "assets/images/FluffyBoardIconDark.png",
+                    height: 300,
+                  )
+                : Image.asset(
+                    "assets/images/FluffyBoardIcon.png",
+                    height: 300,
+                  ),
             CircularProgressIndicator(),
           ],
         ),
@@ -78,13 +80,15 @@ class _DashboardState extends State<Dashboard> {
               Navigator.of(context).pushReplacementNamed('/login')
             }
         });
-    if (!checkedLogin && !loggedIn && online) return (Dashboard.loading(name, context));
+    if (!checkedLogin && !loggedIn && online)
+      return (Dashboard.loading(name, context));
     if (introStorage.getItem('read') == null) print("Switching to tutorial");
     SchedulerBinding.instance!.addPostFrameCallback((_) => {
           if (checkedLogin && !loggedIn && online)
             Navigator.of(context).pushNamed('/intro')
         });
-    if (introStorage.getItem('read') == null) return (Dashboard.loading(name, context));
+    if (introStorage.getItem('read') == null)
+      return (Dashboard.loading(name, context));
 
     return (FileManager(authToken, username, id, online));
   }

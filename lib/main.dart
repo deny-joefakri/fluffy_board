@@ -6,6 +6,7 @@ import 'account/login.dart';
 import 'account/register.dart';
 import 'dashboard/dashboard.dart';
 import 'dashboard/edit_account.dart';
+import 'dashboard/webview_sample.dart';
 import 'dashboard/server_settings.dart';
 import 'documentation/about.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -28,10 +29,12 @@ class FluffyboardApp extends StatelessWidget {
 }
 
 var lightThemeData = new ThemeData(
-    brightness: Brightness.light,);
+  brightness: Brightness.light,
+);
 
 var darkThemeData = ThemeData(
-    brightness: Brightness.dark,);
+  brightness: Brightness.dark,
+);
 
 Widget buildMaterialApp(String initialRoute, context) {
   return MaterialApp(
@@ -50,6 +53,7 @@ Widget buildMaterialApp(String initialRoute, context) {
       '/edit-account': (context) => EditAccount(),
       '/server-settings': (context) => ServerSettings(),
       '/webdav-settings': (context) => WebDavSettings(),
+      '/webview-sample': (context) => WebviewSample(),
     },
     initialRoute: initialRoute,
   );

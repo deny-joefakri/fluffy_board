@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fluffy_board/whiteboard/overlays/toolbar/background_toolbar.dart';
+import 'package:fluffy_board/whiteboard/overlays/toolbar/customtabs_toolbar.dart';
 import 'package:fluffy_board/whiteboard/overlays/toolbar/draw_options.dart';
 import 'package:fluffy_board/whiteboard/overlays/toolbar/eraser_toolbar.dart';
 import 'package:fluffy_board/whiteboard/overlays/toolbar/figure_toolbar.dart';
@@ -412,6 +413,20 @@ class GetToolbarOptions {
       }
     }
     return backgroundOptions;
+  }
+
+  static Future<CustomTabsOptions> getCustomTabsOptions(
+      String authToken, bool online) async {
+    CustomTabsOptions customTabsOptions = CustomTabsOptions(
+        0,
+        [Colors.white],
+        50,
+        StrokeCap.round,
+        0,
+        (drawOptions) =>
+            _sendBackgroundToolbarOptions(drawOptions, authToken, online));
+
+    return customTabsOptions;
   }
 
   static _sendPencilToolbarOptions(

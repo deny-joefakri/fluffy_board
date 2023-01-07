@@ -17,6 +17,7 @@ import 'dart:ui';
 
 import '../whiteboard_view.dart';
 import 'toolbar/background_toolbar.dart';
+import 'toolbar/customtabs_toolbar.dart';
 import 'toolbar/color_picker_view.dart';
 import 'toolbar/eraser_toolbar.dart';
 import 'toolbar/pencil_toolbar.dart';
@@ -35,7 +36,8 @@ enum SelectedTool {
   text,
   figure,
   upload,
-  background
+  background,
+  customtabs,
 }
 
 typedef OnChangedToolbarOptions<T> = Function(ToolbarOptions);
@@ -49,6 +51,7 @@ class ToolbarOptions {
   FigureOptions figureOptions;
   TextOptions textOptions;
   BackgroundOptions backgroundOptions;
+  CustomTabsOptions customtabs;
   bool colorPickerOpen;
   SettingsSelected settingsSelected;
   Scribble? settingsSelectedScribble;
@@ -67,14 +70,15 @@ class ToolbarOptions {
       this.backgroundOptions,
       this.colorPickerOpen,
       this.settingsSelected,
-      this.websocketConnection);
+      this.websocketConnection,
+      this.customtabs);
 }
 
 class Toolbar extends StatefulWidget {
   final ToolbarOptions toolbarOptions;
   final OnChangedToolbarOptions onChangedToolbarOptions;
   final List<Upload> uploads;
-  final  Offset offset;
+  final Offset offset;
   final Offset sessionOffset;
   final ZoomOptions zoomOptions;
   final List<Scribble> scribbles;
@@ -107,7 +111,7 @@ class Toolbar extends StatefulWidget {
 }
 
 class _ToolbarState extends State<Toolbar> {
-  List<bool> selectedToolList = List.generate(10, (i) => i == 0 ? true : false);
+  List<bool> selectedToolList = List.generate(11, (i) => i == 0 ? true : false);
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +148,7 @@ class _ToolbarState extends State<Toolbar> {
     }
 
     Widget normalToolbar = (Card(
-      elevation: 20,
+      elevation: 21,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
@@ -164,6 +168,7 @@ class _ToolbarState extends State<Toolbar> {
             Icon(OwnIcons.change_history),
             Icon(Icons.file_upload_outlined),
             Icon(Icons.grid_4x4),
+            Icon(OwnIcons.language),
           ],
           onPressed: (int index) {
             setState(() {
@@ -304,9 +309,18 @@ class _ToolbarState extends State<Toolbar> {
             axis: axis,
             toolbarOptions: widget.toolbarOptions,
             onChangedToolbarOptions: (toolbarOptions) {
-                setState(() {
-                  widget.onChangedToolbarOptions(toolbarOptions);
-                });
+              setState(() {
+                widget.onChangedToolbarOptions(toolbarOptions);
+              });
+            });
+      case SelectedTool.customtabs:
+        return CustomTabsToolbar(
+            axis: axis,
+            toolbarOptions: widget.toolbarOptions,
+            onChangedToolbarOptions: (toolbarOptions) {
+              setState(() {
+                widget.onChangedToolbarOptions(toolbarOptions);
+              });
             });
     }
   }

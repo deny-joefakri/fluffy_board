@@ -63,7 +63,7 @@ dev_dependencies:
   pdf: ^3.4.2 #NS
   sleek_circular_slider: ^2.0.1
   #Export:
-  file_saver: ^0.0.9 #NS
+  file_saver: ^0.1.1 #NS
   # Server Connection
   uuid: ^3.0.4 #NS
   web_socket_channel: ^2.1.0 #NS
@@ -81,6 +81,8 @@ dev_dependencies:
   easy_dynamic_theme: ^2.2.0 #NS
   # WebDav Sync
   webdav_client: ^1.0.0
+
+  flutter_custom_tabs: ^1.0.4
 
 #   App Icons
 flutter_icons:

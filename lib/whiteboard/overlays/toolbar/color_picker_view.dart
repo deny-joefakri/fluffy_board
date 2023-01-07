@@ -1,4 +1,3 @@
-
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:fluffy_board/utils/screen_utils.dart';
 import 'package:fluffy_board/whiteboard/websocket/websocket_connection.dart';
@@ -40,20 +39,20 @@ class _ColorPickerViewState extends State<ColorPickerView> {
         ? ScreenUtils.getScreenWidth(context) / 2
         : 500;
 
-     num colorPickerHeight=  ScreenUtils.getScreenHeight(context) < 700
+    num colorPickerHeight = ScreenUtils.getScreenHeight(context) < 700
         ? ScreenUtils.getScreenHeight(context) / 2
         : 500;
 
-     num colorPickerItemSize = ScreenUtils.getScreenWidth(context) < 700 ||
-         ScreenUtils.getScreenHeight(context) < 500
-         ? 25
-         : 40;
+    num colorPickerItemSize = ScreenUtils.getScreenWidth(context) < 700 ||
+            ScreenUtils.getScreenHeight(context) < 500
+        ? 25
+        : 40;
 
     DrawOptions? drawOptions = _getDrawOptions();
     return (Padding(
         padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
         child: SizedBox(
-          width:  colorPickerWidth.toDouble(),
+          width: colorPickerWidth.toDouble(),
           height: colorPickerHeight.toDouble(),
           child: Card(
             elevation: 20,
@@ -69,7 +68,10 @@ class _ColorPickerViewState extends State<ColorPickerView> {
                     ? widget.selectedSettingsScribble == null
                         ? widget.selectedTextItemScribble!.color
                         : widget.selectedSettingsScribble!.color
-                    : widget.toolbarOptions.selectedTool == Toolbar.SelectedTool.background ? drawOptions.colorPresets[0] : drawOptions.colorPresets[drawOptions.currentColor],
+                    : widget.toolbarOptions.selectedTool ==
+                            Toolbar.SelectedTool.background
+                        ? drawOptions.colorPresets[0]
+                        : drawOptions.colorPresets[drawOptions.currentColor],
                 // Update the screenPickerColor using the callback.
                 width: colorPickerItemSize.toDouble(),
                 height: colorPickerItemSize.toDouble(),
@@ -78,10 +80,14 @@ class _ColorPickerViewState extends State<ColorPickerView> {
                     if (drawOptions == null) {
                       if (widget.selectedSettingsScribble != null) {
                         widget.selectedSettingsScribble!.color = color;
-                        WebsocketSend.sendScribbleUpdate(widget.selectedSettingsScribble!, widget.websocketConnection);
+                        WebsocketSend.sendScribbleUpdate(
+                            widget.selectedSettingsScribble!,
+                            widget.websocketConnection);
                       } else if (widget.selectedTextItemScribble != null) {
                         widget.selectedTextItemScribble!.color = color;
-                        WebsocketSend.sendUpdateTextItem(widget.selectedTextItemScribble!, widget.websocketConnection);
+                        WebsocketSend.sendUpdateTextItem(
+                            widget.selectedTextItemScribble!,
+                            widget.websocketConnection);
                       }
                     } else {
                       drawOptions.colorPresets[drawOptions.currentColor] =
@@ -104,14 +110,18 @@ class _ColorPickerViewState extends State<ColorPickerView> {
                                   widget.toolbarOptions.straightLineOptions);
                           break;
                         case Toolbar.SelectedTool.text:
-                          widget.toolbarOptions.textOptions
-                              .onDrawOptionChange(
+                          widget.toolbarOptions.textOptions.onDrawOptionChange(
                               widget.toolbarOptions.textOptions);
                           break;
                         case Toolbar.SelectedTool.background:
                           widget.toolbarOptions.backgroundOptions
                               .onDrawOptionChange(
-                              widget.toolbarOptions.backgroundOptions);
+                                  widget.toolbarOptions.backgroundOptions);
+                          break;
+                        case Toolbar.SelectedTool.customtabs:
+                          widget.toolbarOptions.backgroundOptions
+                              .onDrawOptionChange(
+                                  widget.toolbarOptions.backgroundOptions);
                           break;
                         default:
                           break;
@@ -166,6 +176,8 @@ class _ColorPickerViewState extends State<ColorPickerView> {
       case Toolbar.SelectedTool.figure:
         return widget.toolbarOptions.figureOptions;
       case Toolbar.SelectedTool.background:
+        return widget.toolbarOptions.backgroundOptions;
+      case Toolbar.SelectedTool.customtabs:
         return widget.toolbarOptions.backgroundOptions;
       default:
         return widget.toolbarOptions.pencilOptions;

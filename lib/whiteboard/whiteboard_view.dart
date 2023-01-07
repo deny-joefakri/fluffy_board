@@ -6,6 +6,7 @@ import 'package:fluffy_board/utils/export_utils.dart';
 import 'package:fluffy_board/utils/screen_utils.dart';
 import 'package:fluffy_board/whiteboard/infinite_canvas.dart';
 import 'package:fluffy_board/whiteboard/overlays/minimap.dart';
+import 'package:fluffy_board/whiteboard/overlays/toolbar/customtabs_toolbar.dart';
 import 'package:fluffy_board/whiteboard/texts_canvas.dart';
 import 'package:fluffy_board/whiteboard/websocket/websocket_connection.dart';
 import 'package:fluffy_board/whiteboard/websocket/websocket_manager_send.dart';
@@ -570,6 +571,10 @@ class _WhiteboardViewState extends State<WhiteboardView> {
     BackgroundOptions backgroundOptions =
         await GetToolbarOptions.getBackgroundOptions(
             widget.authToken, widget.online);
+    CustomTabsOptions customTabsOptions =
+        await GetToolbarOptions.getCustomTabsOptions(
+            widget.authToken, widget.online);
+
     setState(() {
       toolbarOptions = new Toolbar.ToolbarOptions(
           Toolbar.SelectedTool.move,
@@ -582,7 +587,8 @@ class _WhiteboardViewState extends State<WhiteboardView> {
           backgroundOptions,
           false,
           Toolbar.SettingsSelected.none,
-          websocketConnection);
+          websocketConnection,
+          customTabsOptions);
     });
   }
 

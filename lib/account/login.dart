@@ -101,9 +101,9 @@ class _LoginFormState extends State<LoginForm> {
               child: FutureBuilder(
                   future: storage.ready,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.data == null) {
+                    /*if (snapshot.data == null) {
                       return Center(child: CircularProgressIndicator());
-                    }
+                    }*/
                     return (ElevatedButton(
                         style: ThemeDataUtils.getFullWithElevatedButtonStyle(),
                         onPressed: () => _login(),

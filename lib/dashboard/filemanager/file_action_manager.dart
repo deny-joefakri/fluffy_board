@@ -176,10 +176,8 @@ class FileActionManager {
       whiteboardButtons,
       Whiteboards whiteboards,
       double fileIconSize,
-      String authToken,
       String id,
       String username,
-      bool online,
       String currentDirectory,
       OfflineWhiteboards offlineWhiteboards,
       Set<String> offlineWhiteboardIds,
@@ -203,8 +201,7 @@ class FileActionManager {
                               context,
                               MaterialPageRoute<void>(
                                   builder: (BuildContext context) =>
-                                      WhiteboardView(whiteboard, null, null,
-                                          authToken, id, online)));
+                                      WhiteboardView(whiteboard, null, null, id)));
                         },
                       ),
                       Text(
@@ -219,7 +216,7 @@ class FileActionManager {
                     PopupMenuItem(child: Text(AppLocalizations.of(context)!.renameWhiteboard), value: 0),
                     PopupMenuItem(child: Text(AppLocalizations.of(context)!.deleteWhiteboard), value: 1),
                     PopupMenuItem(child: Text(AppLocalizations.of(context)!.shareWhiteboard), value: 2),
-                    PopupMenuItem(child: Text(AppLocalizations.of(context)!.downloadWhiteboard), value: 3),
+                    /*PopupMenuItem(child: Text(AppLocalizations.of(context)!.downloadWhiteboard), value: 3),*/
                   ],
                   onSelected: (value) async {
                     switch (value) {
@@ -229,7 +226,6 @@ class FileActionManager {
                             MaterialPageRoute<void>(
                               builder: (BuildContext context) =>
                                   RenameWhiteboard(
-                                      authToken,
                                       whiteboard.id,
                                       currentDirectory,
                                       whiteboard.name,
@@ -238,7 +234,7 @@ class FileActionManager {
                         break;
                       case 1:
                         DeleteManager.deleteWhiteboardDialog(context,
-                            whiteboard, authToken, _refreshController);
+                            whiteboard, _refreshController);
                         break;
                       case 2:
                         Navigator.push(
@@ -246,7 +242,6 @@ class FileActionManager {
                             MaterialPageRoute<void>(
                               builder: (BuildContext context) =>
                                   ShareWhiteboard(
-                                      authToken,
                                       username,
                                       whiteboard.id,
                                       whiteboard.name,
@@ -255,9 +250,8 @@ class FileActionManager {
                                       whiteboard.editId),
                             ));
                         break;
-                      case 3:
-                        OfflineWhiteboard
-                            offlineWhiteboard = new OfflineWhiteboard(
+                      /*case 3:
+                        OfflineWhiteboard offlineWhiteboard = new OfflineWhiteboard(
                                 uuid.v4(),
                                 currentDirectory,
                                 whiteboard.name,
@@ -290,7 +284,7 @@ class FileActionManager {
                         await fileManagerStorageIndex.setItem("indexes",
                             jsonEncode(offlineWhiteboardIds.toList()));
                         _refreshController.requestRefresh();
-                        break;
+                        break;*/
                     }
                   },
                 )
@@ -333,8 +327,7 @@ class FileActionManager {
                               context,
                               MaterialPageRoute<void>(
                                   builder: (BuildContext context) =>
-                                      WhiteboardView(null, whiteboard, null,
-                                          authToken, id, online)));
+                                      WhiteboardView(null, whiteboard, null, id)));
                         },
                       ),
                       Text(
@@ -353,7 +346,7 @@ class FileActionManager {
                     switch (value) {
                       case 0:
                         DeleteManager.deleteExtWhiteboardDialog(context,
-                            whiteboard, authToken, _refreshController);
+                            whiteboard, _refreshController);
                         break;
                       case 1:
                         OfflineWhiteboard offlineWhiteboard =
@@ -436,9 +429,7 @@ class FileActionManager {
                                           null,
                                           null,
                                           whiteboard,
-                                          authToken,
-                                          id,
-                                          online)));
+                                          id)));
                         },
                       ),
                       Text(whiteboard.name
@@ -469,7 +460,6 @@ class FileActionManager {
                             context,
                             whiteboard,
                             offlineWhiteboardIds,
-                            authToken,
                             _refreshController);
                         break;
                       case 2:

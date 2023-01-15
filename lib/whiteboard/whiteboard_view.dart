@@ -39,12 +39,9 @@ class WhiteboardView extends StatefulWidget {
   final Whiteboard? whiteboard;
   final ExtWhiteboard? extWhiteboard;
   final OfflineWhiteboard? offlineWhiteboard;
-  final String authToken;
   final String id;
-  final bool online;
 
-  WhiteboardView(this.whiteboard, this.extWhiteboard, this.offlineWhiteboard,
-      this.authToken, this.id, this.online);
+  WhiteboardView(this.whiteboard, this.extWhiteboard, this.offlineWhiteboard, this.id);
 
   @override
   _WhiteboardViewState createState() => _WhiteboardViewState();
@@ -71,7 +68,7 @@ class _WhiteboardViewState extends State<WhiteboardView> {
   @override
   void initState() {
     super.initState();
-    if (widget.offlineWhiteboard == null && widget.online) {
+    /*if (widget.offlineWhiteboard == null && widget.online) {
       try {
         websocketConnection = WebsocketConnection.getInstance(
           id: widget.id,
@@ -239,7 +236,7 @@ class _WhiteboardViewState extends State<WhiteboardView> {
       }
       // WidgetsBinding.instance!
       //     .addPostFrameCallback((_) => _createToolbars(context));
-    }
+    }*/
     autoSaveTimer = Timer.periodic(
         Duration(seconds: 30), (timer) => saveOfflineWhiteboard());
     settingsStorage.ready.then((value) => setState(() {
@@ -363,7 +360,6 @@ class _WhiteboardViewState extends State<WhiteboardView> {
                                         await WhiteboardViewDataManager
                                             .getBookmarks(
                                                 refreshController,
-                                                widget.authToken,
                                                 widget.whiteboard,
                                                 widget.extWhiteboard,
                                                 widget.offlineWhiteboard);
@@ -372,8 +368,6 @@ class _WhiteboardViewState extends State<WhiteboardView> {
                                       refreshController.refreshCompleted();
                                     });
                                   },
-                                  authToken: widget.authToken,
-                                  online: widget.online,
                                   onBookMarkTeleport: (offset, scale) => {
                                     setState(() {
                                       this.offset = offset;
@@ -456,7 +450,6 @@ class _WhiteboardViewState extends State<WhiteboardView> {
               stylusOnly: stylusOnly,
               id: widget.id,
               onSaveOfflineWhiteboard: () => saveOfflineWhiteboard(),
-              authToken: widget.authToken,
               websocketConnection: websocketConnection,
               toolbarOptions: toolbarOptions!,
               zoomOptions: zoomOptions,
@@ -554,26 +547,18 @@ class _WhiteboardViewState extends State<WhiteboardView> {
   }
 
   Future _getToolBarOptions() async {
-    PencilOptions pencilOptions = await GetToolbarOptions.getPencilOptions(
-        widget.authToken, widget.online);
+    PencilOptions pencilOptions = await GetToolbarOptions.getPencilOptions();
     HighlighterOptions highlighterOptions =
-        await GetToolbarOptions.getHighlighterOptions(
-            widget.authToken, widget.online);
-    EraserOptions eraserOptions = await GetToolbarOptions.getEraserOptions(
-        widget.authToken, widget.online);
+        await GetToolbarOptions.getHighlighterOptions();
+    EraserOptions eraserOptions = await GetToolbarOptions.getEraserOptions();
     StraigtLineOptions straightLineOptions =
-        await GetToolbarOptions.getStraightLineOptions(
-            widget.authToken, widget.online);
-    TextOptions textItemOptions = await GetToolbarOptions.getTextItemOptions(
-        widget.authToken, widget.online);
-    FigureOptions figureOptions = await GetToolbarOptions.getFigureOptions(
-        widget.authToken, widget.online);
+        await GetToolbarOptions.getStraightLineOptions();
+    TextOptions textItemOptions = await GetToolbarOptions.getTextItemOptions();
+    FigureOptions figureOptions = await GetToolbarOptions.getFigureOptions();
     BackgroundOptions backgroundOptions =
-        await GetToolbarOptions.getBackgroundOptions(
-            widget.authToken, widget.online);
+        await GetToolbarOptions.getBackgroundOptions();
     CustomTabsOptions customTabsOptions =
-        await GetToolbarOptions.getCustomTabsOptions(
-            widget.authToken, widget.online);
+        await GetToolbarOptions.getCustomTabsOptions();
 
     setState(() {
       toolbarOptions = new Toolbar.ToolbarOptions(
@@ -593,7 +578,7 @@ class _WhiteboardViewState extends State<WhiteboardView> {
   }
 
   Future _getWhiteboardData() async {
-    if (websocketConnection != null) {
+    /*if (websocketConnection != null) {
       await WhiteboardViewDataManager.getScribbles(
           widget.authToken, widget.whiteboard, widget.extWhiteboard,
           (Scribble newScribble) {
@@ -624,7 +609,7 @@ class _WhiteboardViewState extends State<WhiteboardView> {
       setState(() {
         this.bookmarks = bookmarks;
       });
-    }
+    }*/
     if (widget.offlineWhiteboard != null) {
       print("Get Offset" + widget.offlineWhiteboard!.offset.toString());
       print("Get scale" + widget.offlineWhiteboard!.scale.toString());

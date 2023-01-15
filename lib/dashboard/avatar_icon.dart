@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AvatarIcon extends StatefulWidget {
-  final bool online;
+  final bool online = false;
 
-  AvatarIcon(this.online);
+  AvatarIcon();
 
   @override
   _AvatarIconState createState() => _AvatarIconState();

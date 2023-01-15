@@ -7,13 +7,11 @@ import 'package:uuid/uuid.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class RenameBookmark extends StatefulWidget {
-  final String authToken;
-  final bool online;
   final WebsocketConnection? websocketConnection;
   final RefreshController refreshController;
   final Bookmark bookmark;
 
-  RenameBookmark(this.authToken, this.online, this.websocketConnection,
+  RenameBookmark(this.websocketConnection,
       this.refreshController, this.bookmark);
 
   @override
@@ -36,14 +34,10 @@ class _RenameBookmarkState extends State<RenameBookmark> {
                   return (FractionallySizedBox(
                       widthFactor: 0.5,
                       child: RenameBookmarkForm(
-                          widget.authToken,
-                          widget.online,
                           widget.websocketConnection,
                           widget.refreshController, widget.bookmark)));
                 } else {
                   return (RenameBookmarkForm(
-                      widget.authToken,
-                      widget.online,
                       widget.websocketConnection,
                       widget.refreshController, widget.bookmark));
                 }
@@ -55,13 +49,11 @@ class _RenameBookmarkState extends State<RenameBookmark> {
 }
 
 class RenameBookmarkForm extends StatefulWidget {
-  final String authToken;
-  final bool online;
   final WebsocketConnection? websocketConnection;
   final RefreshController refreshController;
   final Bookmark bookmark;
 
-  RenameBookmarkForm(this.authToken, this.online, this.websocketConnection,
+  RenameBookmarkForm(this.websocketConnection,
       this.refreshController, this.bookmark);
 
   @override
@@ -124,12 +116,14 @@ class _RenameBookmarkFormState extends State<RenameBookmarkForm> {
       // you'd often call a server or save the information in a database.
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Trying to create bookmark ...')));
-      if (widget.online && widget.websocketConnection != null) {
+      /*if (widget.online && widget.websocketConnection != null) {
         bookmark.name = nameController.text;
         WebsocketSend.sendBookmarkUpdate(bookmark, widget.websocketConnection);
         Navigator.pop(context);
         widget.refreshController.requestRefresh();
-      }
+      }*/
+      Navigator.pop(context);
+      widget.refreshController.requestRefresh();
     }
   }
 }

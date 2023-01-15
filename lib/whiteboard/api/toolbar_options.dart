@@ -19,16 +19,15 @@ import '../whiteboard_view.dart';
 class GetToolbarOptions {
   static final LocalStorage settingsStorage = new LocalStorage('settings');
 
-  static Future<PencilOptions> getPencilOptions(
-      String authToken, bool online) async {
+  static Future<PencilOptions> getPencilOptions() async {
     PencilOptions pencilOptions = PencilOptions(
         List.from({Colors.black, Colors.blue, Colors.red}),
         1,
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendPencilToolbarOptions(drawOptions, authToken, online));
-    if (online) {
+            _sendPencilToolbarOptions(drawOptions));
+    /*if (online) {
       http.Response pencilResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -72,12 +71,29 @@ class GetToolbarOptions {
                 _sendPencilToolbarOptions(drawOptions, authToken, online));
         return pencilOptions;
       }
+    }*/
+
+    String? decodablePencilOptions =
+    settingsStorage.getItem("pencil-options");
+    if (decodablePencilOptions != null) {
+      DecodePencilOptions decodePencilOptions =
+      DecodePencilOptions.fromJson(jsonDecode(decodablePencilOptions));
+      pencilOptions = new PencilOptions(
+          decodePencilOptions.colorPresets
+              .map((e) => HexColor.fromHex(e))
+              .cast<Color>()
+              .toList(),
+          decodePencilOptions.strokeWidth,
+          StrokeCap.round,
+          decodePencilOptions.selectedColor,
+              (drawOptions) =>
+              _sendPencilToolbarOptions(drawOptions));
+      return pencilOptions;
     }
     return pencilOptions;
   }
 
-  static Future<HighlighterOptions> getHighlighterOptions(
-      String authToken, bool online) async {
+  static Future<HighlighterOptions> getHighlighterOptions() async {
     HighlighterOptions highlighterOptions = HighlighterOptions(
         List.from({
           HexColor.fromHexWithOpacity(Colors.limeAccent, 0.25),
@@ -88,8 +104,8 @@ class GetToolbarOptions {
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendHighlighterToolbarOptions(drawOptions, authToken, online));
-    if (online) {
+            _sendHighlighterToolbarOptions(drawOptions));
+    /*if (online) {
       http.Response highlighterResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -116,11 +132,11 @@ class GetToolbarOptions {
       }
     } else {
       String? decodableHighlighterOptions =
-          settingsStorage.getItem("highlighter-options");
+      settingsStorage.getItem("highlighter-options");
       if (decodableHighlighterOptions != null) {
         DecodeHighlighterOptions decodeHighlighterOptions =
-            DecodeHighlighterOptions.fromJson(
-                jsonDecode(decodableHighlighterOptions));
+        DecodeHighlighterOptions.fromJson(
+            jsonDecode(decodableHighlighterOptions));
         highlighterOptions = new HighlighterOptions(
             decodeHighlighterOptions.colorPresets
                 .map((e) => HexColor.fromHex(e))
@@ -128,24 +144,42 @@ class GetToolbarOptions {
             decodeHighlighterOptions.strokeWidth,
             StrokeCap.round,
             decodeHighlighterOptions.selectedColor,
-            (drawOptions) =>
+                (drawOptions) =>
                 _sendHighlighterToolbarOptions(drawOptions, authToken, online));
         return highlighterOptions;
       }
+    }*/
+
+    String? decodableHighlighterOptions =
+    settingsStorage.getItem("highlighter-options");
+    if (decodableHighlighterOptions != null) {
+      DecodeHighlighterOptions decodeHighlighterOptions =
+      DecodeHighlighterOptions.fromJson(
+          jsonDecode(decodableHighlighterOptions));
+      highlighterOptions = new HighlighterOptions(
+          decodeHighlighterOptions.colorPresets
+              .map((e) => HexColor.fromHex(e))
+              .toList(),
+          decodeHighlighterOptions.strokeWidth,
+          StrokeCap.round,
+          decodeHighlighterOptions.selectedColor,
+              (drawOptions) =>
+              _sendHighlighterToolbarOptions(drawOptions));
+      return highlighterOptions;
     }
+
     return highlighterOptions;
   }
 
-  static Future<EraserOptions> getEraserOptions(
-      String authToken, bool online) async {
+  static Future<EraserOptions> getEraserOptions() async {
     EraserOptions eraserOptions = EraserOptions(
         List.empty(),
         50,
         StrokeCap.square,
         0,
         (drawOptions) =>
-            _sendEraserToolbarOptions(drawOptions, authToken, online));
-    if (online) {
+            _sendEraserToolbarOptions(drawOptions));
+    /*if (online) {
       http.Response highlighterResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -182,12 +216,26 @@ class GetToolbarOptions {
                 _sendEraserToolbarOptions(drawOptions, authToken, online));
         return eraserOptions;
       }
+    }*/
+
+    String? decodableEraserOptions =
+    settingsStorage.getItem("eraser-options");
+    if (decodableEraserOptions != null) {
+      DecodeEraserOptions decodeEraserOptions =
+      DecodeEraserOptions.fromJson(jsonDecode(decodableEraserOptions));
+      eraserOptions = new EraserOptions(
+          List.empty(),
+          decodeEraserOptions.strokeWidth,
+          StrokeCap.square,
+          0,
+              (drawOptions) =>
+              _sendEraserToolbarOptions(drawOptions));
+      return eraserOptions;
     }
     return eraserOptions;
   }
 
-  static Future<StraigtLineOptions> getStraightLineOptions(
-      String authToken, bool online) async {
+  static Future<StraigtLineOptions> getStraightLineOptions() async {
     StraigtLineOptions straightLineOptions = StraigtLineOptions(
         0,
         List.from({Colors.black, Colors.blue, Colors.red}),
@@ -195,9 +243,9 @@ class GetToolbarOptions {
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendStraightLineToolbarOptions(drawOptions, authToken, online));
+            _sendStraightLineToolbarOptions(drawOptions));
 
-    if (online) {
+    /*if (online) {
       http.Response straightLineResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -241,21 +289,38 @@ class GetToolbarOptions {
             (drawOptions) => _sendStraightLineToolbarOptions(
                 drawOptions, authToken, online));
       }
+    }*/
+
+    String? decodableStraightLineOptions =
+    settingsStorage.getItem("straight-line-options");
+    if (decodableStraightLineOptions != null) {
+      DecodeStraightLineOptions decodeStraightLineOptions =
+      DecodeStraightLineOptions.fromJson(
+          jsonDecode(decodableStraightLineOptions));
+      straightLineOptions = new StraigtLineOptions(
+          decodeStraightLineOptions.selectedCap,
+          decodeStraightLineOptions.colorPresets
+              .map((e) => HexColor.fromHex(e))
+              .toList(),
+          decodeStraightLineOptions.strokeWidth,
+          StrokeCap.square,
+          decodeStraightLineOptions.selectedColor,
+              (drawOptions) => _sendStraightLineToolbarOptions(
+              drawOptions));
     }
     return straightLineOptions;
   }
 
-  static Future<TextOptions> getTextItemOptions(
-      String authToken, bool online) async {
+  static Future<TextOptions> getTextItemOptions() async {
     TextOptions textItemOptions = TextOptions(
         List.from({Colors.black, Colors.blue, Colors.red}),
         10,
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendTextItemToolbarOptions(drawOptions, authToken, online));
+            _sendTextItemToolbarOptions(drawOptions));
 
-    if (online) {
+    /*if (online) {
       http.Response textItemResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -296,12 +361,28 @@ class GetToolbarOptions {
             (drawOptions) =>
                 _sendTextItemToolbarOptions(drawOptions, authToken, online));
       }
+    }*/
+
+    String? decodableTextItemLineOptions =
+    settingsStorage.getItem("text-item-options");
+    if (decodableTextItemLineOptions != null) {
+      DecodeStraightLineOptions decodeTextItemOptions =
+      DecodeStraightLineOptions.fromJson(
+          jsonDecode(decodableTextItemLineOptions));
+      textItemOptions = new TextOptions(
+          decodeTextItemOptions.colorPresets
+              .map((e) => HexColor.fromHex(e))
+              .toList(),
+          decodeTextItemOptions.strokeWidth,
+          StrokeCap.square,
+          decodeTextItemOptions.selectedColor,
+              (drawOptions) =>
+              _sendTextItemToolbarOptions(drawOptions));
     }
     return textItemOptions;
   }
 
-  static Future<FigureOptions> getFigureOptions(
-      String authToken, bool online) async {
+  static Future<FigureOptions> getFigureOptions() async {
     FigureOptions figureOptions = FigureOptions(
         1,
         1,
@@ -310,8 +391,8 @@ class GetToolbarOptions {
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendFigureToolbarOptions(drawOptions, authToken, online));
-    if (online) {
+            _sendFigureToolbarOptions(drawOptions));
+    /*if (online) {
       http.Response straightLineResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -355,12 +436,29 @@ class GetToolbarOptions {
             (drawOptions) =>
                 _sendFigureToolbarOptions(drawOptions, authToken, online));
       }
+    }*/
+
+    String? decodableFigureOptions =
+    settingsStorage.getItem("figure-options");
+    if (decodableFigureOptions != null) {
+      DecodeFigureptions decodeFigureOptions =
+      DecodeFigureptions.fromJson(jsonDecode(decodableFigureOptions));
+      figureOptions = new FigureOptions(
+          decodeFigureOptions.selectedFigure,
+          decodeFigureOptions.selectedFill,
+          decodeFigureOptions.colorPresets
+              .map((e) => HexColor.fromHex(e))
+              .toList(),
+          decodeFigureOptions.strokeWidth,
+          StrokeCap.round,
+          decodeFigureOptions.selectedColor,
+              (drawOptions) =>
+              _sendFigureToolbarOptions(drawOptions));
     }
     return figureOptions;
   }
 
-  static Future<BackgroundOptions> getBackgroundOptions(
-      String authToken, bool online) async {
+  static Future<BackgroundOptions> getBackgroundOptions() async {
     BackgroundOptions backgroundOptions = BackgroundOptions(
         0,
         [Colors.white],
@@ -368,8 +466,8 @@ class GetToolbarOptions {
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendBackgroundToolbarOptions(drawOptions, authToken, online));
-    if (online) {
+            _sendBackgroundToolbarOptions(drawOptions));
+    /*if (online) {
       http.Response backgroundResponse = await http.get(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -411,12 +509,27 @@ class GetToolbarOptions {
             (drawOptions) =>
                 _sendBackgroundToolbarOptions(drawOptions, authToken, online));
       }
+    }*/
+
+    String? decodableBackgroundOptions =
+    settingsStorage.getItem("background-options");
+    if (decodableBackgroundOptions != null) {
+      DecodeBackgroundOptions decodeBackgroundOptions =
+      DecodeBackgroundOptions.fromJson(
+          jsonDecode(decodableBackgroundOptions));
+      backgroundOptions = new BackgroundOptions(
+          decodeBackgroundOptions.selectedBackground,
+          [Colors.white],
+          decodeBackgroundOptions.strokeWidth,
+          StrokeCap.round,
+          0,
+              (drawOptions) =>
+              _sendBackgroundToolbarOptions(drawOptions));
     }
     return backgroundOptions;
   }
 
-  static Future<CustomTabsOptions> getCustomTabsOptions(
-      String authToken, bool online) async {
+  static Future<CustomTabsOptions> getCustomTabsOptions() async {
     CustomTabsOptions customTabsOptions = CustomTabsOptions(
         0,
         [Colors.white],
@@ -424,15 +537,15 @@ class GetToolbarOptions {
         StrokeCap.round,
         0,
         (drawOptions) =>
-            _sendBackgroundToolbarOptions(drawOptions, authToken, online));
+            _sendBackgroundToolbarOptions(drawOptions));
 
     return customTabsOptions;
   }
 
   static _sendPencilToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     PencilOptions pencilOptions = drawOptions as PencilOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -453,13 +566,20 @@ class GetToolbarOptions {
               pencilOptions.colorPresets.map((e) => e.toHex()).toList(),
               pencilOptions.strokeWidth,
               pencilOptions.currentColor)));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "pencil-options",
+        jsonEncode(new EncodePencilOptions(
+            pencilOptions.colorPresets.map((e) => e.toHex()).toList(),
+            pencilOptions.strokeWidth,
+            pencilOptions.currentColor)));
   }
 
   static _sendHighlighterToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     HighlighterOptions highlighterOptions = drawOptions as HighlighterOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -480,13 +600,20 @@ class GetToolbarOptions {
               highlighterOptions.colorPresets.map((e) => e.toHex()).toList(),
               highlighterOptions.strokeWidth,
               highlighterOptions.currentColor)));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "highlighter-options",
+        jsonEncode(new EncodeHighlighterOptions(
+            highlighterOptions.colorPresets.map((e) => e.toHex()).toList(),
+            highlighterOptions.strokeWidth,
+            highlighterOptions.currentColor)));
   }
 
   static _sendEraserToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     EraserOptions eraserOptions = drawOptions as EraserOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -500,13 +627,16 @@ class GetToolbarOptions {
     } else {
       await settingsStorage.setItem("eraser-options",
           jsonEncode(new EncodeEraserOptions(eraserOptions.strokeWidth)));
-    }
+    }*/
+
+    await settingsStorage.setItem("eraser-options",
+        jsonEncode(new EncodeEraserOptions(eraserOptions.strokeWidth)));
   }
 
   static _sendStraightLineToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     StraigtLineOptions straightLineOptions = drawOptions as StraigtLineOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -529,14 +659,22 @@ class GetToolbarOptions {
               straightLineOptions.strokeWidth,
               straightLineOptions.currentColor,
               straightLineOptions.selectedCap)));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "straight-line-options",
+        jsonEncode(new EncodeStraightLineOptions(
+            straightLineOptions.colorPresets.map((e) => e.toHex()).toList(),
+            straightLineOptions.strokeWidth,
+            straightLineOptions.currentColor,
+            straightLineOptions.selectedCap)));
   }
 
   static _sendTextItemToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     print("Sending text item options");
     TextOptions textItemOptions = drawOptions as TextOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -557,13 +695,20 @@ class GetToolbarOptions {
               textItemOptions.colorPresets.map((e) => e.toHex()).toList(),
               textItemOptions.strokeWidth,
               textItemOptions.currentColor)));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "text-item-options",
+        jsonEncode(new EncodeTextItemOptions(
+            textItemOptions.colorPresets.map((e) => e.toHex()).toList(),
+            textItemOptions.strokeWidth,
+            textItemOptions.currentColor)));
   }
 
   static _sendFigureToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     FigureOptions figureOptions = drawOptions as FigureOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -588,13 +733,22 @@ class GetToolbarOptions {
               figureOptions.currentColor,
               figureOptions.selectedFigure,
               figureOptions.selectedFill)));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "figure-options",
+        jsonEncode(new EncodeFigureOptions(
+            figureOptions.colorPresets.map((e) => e.toHex()).toList(),
+            figureOptions.strokeWidth,
+            figureOptions.currentColor,
+            figureOptions.selectedFigure,
+            figureOptions.selectedFill)));
   }
 
   static _sendBackgroundToolbarOptions(
-      DrawOptions drawOptions, String authToken, bool online) async {
+      DrawOptions drawOptions) async {
     BackgroundOptions backgroundOptions = drawOptions as BackgroundOptions;
-    if (online) {
+    /*if (online) {
       await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -617,6 +771,14 @@ class GetToolbarOptions {
             backgroundOptions.selectedBackground,
             backgroundOptions.colorPresets.map((e) => e.toHex()).toList(),
           )));
-    }
+    }*/
+
+    await settingsStorage.setItem(
+        "background-options",
+        jsonEncode(new EncodeBackgroundOptions(
+          backgroundOptions.strokeWidth,
+          backgroundOptions.selectedBackground,
+          backgroundOptions.colorPresets.map((e) => e.toHex()).toList(),
+        )));
   }
 }

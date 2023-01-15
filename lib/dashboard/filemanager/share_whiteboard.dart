@@ -11,7 +11,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShareWhiteboard extends StatefulWidget {
-  final String authToken;
   final String username;
   final String id;
   final String name;
@@ -19,7 +18,7 @@ class ShareWhiteboard extends StatefulWidget {
   final String viewId;
   final String editId;
 
-  ShareWhiteboard(this.authToken, this.username, this.id, this.name,
+  ShareWhiteboard(this.username, this.id, this.name,
       this.directory, this.viewId, this.editId);
 
   @override
@@ -42,7 +41,6 @@ class _ShareWhiteboardState extends State<ShareWhiteboard> {
                   return (FractionallySizedBox(
                       widthFactor: 0.6,
                       child: ShareWhiteboardForm(
-                          widget.authToken,
                           widget.username,
                           widget.id,
                           widget.name,
@@ -51,7 +49,6 @@ class _ShareWhiteboardState extends State<ShareWhiteboard> {
                           widget.editId)));
                 } else {
                   return (ShareWhiteboardForm(
-                      widget.authToken,
                       widget.username,
                       widget.id,
                       widget.name,
@@ -68,7 +65,6 @@ class _ShareWhiteboardState extends State<ShareWhiteboard> {
 }
 
 class ShareWhiteboardForm extends StatefulWidget {
-  final String authToken;
   final String username;
   final String id;
   final String name;
@@ -76,7 +72,7 @@ class ShareWhiteboardForm extends StatefulWidget {
   final String viewId;
   final String editId;
 
-  ShareWhiteboardForm(this.authToken, this.username, this.id, this.name,
+  ShareWhiteboardForm(this.username, this.id, this.name,
       this.directory, this.viewId, this.editId);
 
   @override

@@ -13,19 +13,15 @@ typedef OnBookMarkTeleport = Function(Offset, double);
 typedef OnBookMarkRefresh = Function(RefreshController);
 
 class BookmarkManager extends StatefulWidget {
-  final String authToken;
   final OnBookMarkTeleport onBookMarkTeleport;
   final List<Bookmark> bookmarks;
   final Offset offset;
   final double scale;
   final WebsocketConnection? websocketConnection;
-  final bool online;
   final OnBookMarkRefresh onBookMarkRefresh;
 
   BookmarkManager(
-      {required this.authToken,
-      required this.online,
-      required this.onBookMarkTeleport,
+      {required this.onBookMarkTeleport,
       required this.bookmarks,
       required this.offset,
       required this.scale,
@@ -56,8 +52,6 @@ class _BookmarkManagerState extends State<BookmarkManager> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => AddBookmark(
-                                    widget.authToken,
-                                    widget.online,
                                     widget.websocketConnection,
                                     widget.offset,
                                     widget.scale,
@@ -103,8 +97,6 @@ class _BookmarkManagerState extends State<BookmarkManager> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => RenameBookmark(
-                                          widget.authToken,
-                                          widget.online,
                                           widget.websocketConnection,
                                           refreshController,
                                           widget.bookmarks[index])));

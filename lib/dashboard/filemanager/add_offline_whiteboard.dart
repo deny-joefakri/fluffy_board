@@ -15,13 +15,12 @@ import 'package:uuid/uuid.dart';
 import 'file_manager_types.dart';
 
 class AddOfflineWhiteboard extends StatefulWidget {
-  final String authToken;
   final String directory;
   final OfflineWhiteboards offlineWhiteboards;
   final Set<String> offlineWhiteboardIds;
   final RefreshController _refreshController;
 
-  AddOfflineWhiteboard(this.authToken, this.directory, this._refreshController,
+  AddOfflineWhiteboard(this.directory, this._refreshController,
       this.offlineWhiteboards, this.offlineWhiteboardIds);
 
   @override
@@ -44,14 +43,12 @@ class _AddOfflineWhiteboardState extends State<AddOfflineWhiteboard> {
                   return (FractionallySizedBox(
                       widthFactor: 0.5,
                       child: AddOfflineWhiteboardForm(
-                          widget.authToken,
                           widget.directory,
                           widget._refreshController,
                           widget.offlineWhiteboards,
                           widget.offlineWhiteboardIds)));
                 } else {
                   return (AddOfflineWhiteboardForm(
-                      widget.authToken,
                       widget.directory,
                       widget._refreshController,
                       widget.offlineWhiteboards,
@@ -65,14 +62,12 @@ class _AddOfflineWhiteboardState extends State<AddOfflineWhiteboard> {
 }
 
 class AddOfflineWhiteboardForm extends StatefulWidget {
-  final String authToken;
   final String directory;
   final RefreshController _refreshController;
   final OfflineWhiteboards offlineWhiteboards;
   final Set<String> offlineWhiteboardIds;
 
   AddOfflineWhiteboardForm(
-      this.authToken,
       this.directory,
       this._refreshController,
       this.offlineWhiteboards,

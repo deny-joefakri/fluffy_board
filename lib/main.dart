@@ -23,7 +23,7 @@ class FluffyboardApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return buildMaterialApp('/about', context);
+    return buildMaterialApp('/dashboard', context);
     // return buildMaterialApp('/login', context);
   }
 }

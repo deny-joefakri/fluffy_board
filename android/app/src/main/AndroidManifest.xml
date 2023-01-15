@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pro.oblivioncoding.fluffy_board">
    <application
-        android:label="Fluffyboard"
+        android:label="Unisign Board"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

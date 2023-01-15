@@ -68,7 +68,7 @@ class DeleteManager {
         });
   }
 
-  static deleteWhiteboardDialog(BuildContext context, Whiteboard whiteboard, String authToken,
+  static deleteWhiteboardDialog(BuildContext context, Whiteboard whiteboard,
       RefreshController _refreshController) {
     showDialog(
         context: context,
@@ -80,7 +80,7 @@ class DeleteManager {
               TextButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
-                    http.Response deleteResponse = await http.post(
+                    /*http.Response deleteResponse = await http.post(
                         Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                                 dotenv.env['REST_API_URL']!) +
                             "/filemanager/whiteboard/delete"),
@@ -100,7 +100,7 @@ class DeleteManager {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Error while deleting Whiteboard!"),
                           backgroundColor: Colors.red));
-                    }
+                    }*/
                     _refreshController.requestRefresh();
                   },
                   child: Text(AppLocalizations.of(context)!.yes)),
@@ -115,7 +115,7 @@ class DeleteManager {
   }
 
   static deleteExtWhiteboardDialog(
-      BuildContext context, ExtWhiteboard whiteboard, String authToken, RefreshController _refreshController) {
+      BuildContext context, ExtWhiteboard whiteboard, RefreshController _refreshController) {
     showDialog(
         context: context,
         builder: (BuildContext ctx) {
@@ -126,7 +126,7 @@ class DeleteManager {
               TextButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
-                    http.Response deleteResponse = await http.post(
+                    /*http.Response deleteResponse = await http.post(
                         Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                                 dotenv.env['REST_API_URL']!) +
                             "/filemanager-ext/whiteboard/delete"),
@@ -146,7 +146,7 @@ class DeleteManager {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(AppLocalizations.of(context)!.errorDelete),
                           backgroundColor: Colors.red));
-                    }
+                    }*/
                     _refreshController.requestRefresh();
                   },
                   child: Text(AppLocalizations.of(context)!.yes)),
@@ -161,7 +161,7 @@ class DeleteManager {
   }
 
   static deleteOfflineWhiteboardDialog(
-      BuildContext context, OfflineWhiteboard whiteboard, Set<String> offlineWhiteboardIds, String authToken, RefreshController _refreshController) {
+      BuildContext context, OfflineWhiteboard whiteboard, Set<String> offlineWhiteboardIds, RefreshController _refreshController) {
     showDialog(
         context: context,
         builder: (BuildContext ctx) {

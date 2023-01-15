@@ -148,12 +148,12 @@ class WhiteboardViewDataManager {
     }
   }
 
-  static Future<List<Bookmark>> getBookmarks(RefreshController? refreshController, String authToken, Whiteboard? whiteboard, ExtWhiteboard? extWhiteboard, OfflineWhiteboard? offlineWhiteboard) async {
+  static Future<List<Bookmark>> getBookmarks(RefreshController? refreshController, Whiteboard? whiteboard, ExtWhiteboard? extWhiteboard, OfflineWhiteboard? offlineWhiteboard) async {
     if (offlineWhiteboard != null) {
       if (refreshController != null) refreshController.refreshCompleted();
       return(offlineWhiteboard.bookmarks.list);
     } else {
-      List<Bookmark> localBookmarks = [];
+      /*List<Bookmark> localBookmarks = [];
       http.Response bookmarkResponse = await http.post(
           Uri.parse((settingsStorage.getItem("REST_API_URL") ??
                   dotenv.env['REST_API_URL']!) +
@@ -188,7 +188,8 @@ class WhiteboardViewDataManager {
       } else {
         return [];
         // if (refreshController != null) refreshController.refreshFailed();
-      }
+      }*/
+      return [];
     }
   }
 }

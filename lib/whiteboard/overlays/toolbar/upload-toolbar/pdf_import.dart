@@ -121,10 +121,10 @@ class _PDFImportFormState extends State<PDFImportForm> {
                 },
                 child: Text("Import")),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.all(8.0),
             child: loading ? CircularProgressIndicator() : Container(),
-          )
+          )*/
         ],
       )),
     );

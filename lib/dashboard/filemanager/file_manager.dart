@@ -11,14 +11,10 @@ import 'file_action_manager.dart';
 import 'file_manager_types.dart';
 import 'whiteboard_data_manager.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FileManager extends StatefulWidget {
-  final String authToken;
-  final String username;
-  final String id;
-  final bool online;
 
-  FileManager(this.authToken, this.username, this.id, this.online);
 
   @override
   _FileManagerState createState() => _FileManagerState();
@@ -53,18 +49,18 @@ class _FileManagerState extends State<FileManager> {
     List<BreadCrumbItem> breadCrumbItems = [];
     FileActionManager.mapDirectories(
         context,
-        widget.online,
+        true,
         directoryAndWhiteboardButtons,
         directories,
         fileIconSize,
-        widget.authToken,
+        "",
         currentDirectory,
         _refreshController, (directory) {
       currentDirectory = directory!.id;
       currentDirectoryPath.add(directory);
     });
     FileActionManager.mapBreadCrumbs(
-        context, breadCrumbItems, fontSize, widget.authToken, (directory) {
+        context, breadCrumbItems, fontSize, "", (directory) {
       if (directory == null) {
         currentDirectory = "";
         currentDirectoryPath.clear();
@@ -77,10 +73,8 @@ class _FileManagerState extends State<FileManager> {
         directoryAndWhiteboardButtons,
         whiteboards,
         fileIconSize,
-        widget.authToken,
-        widget.id,
-        widget.username,
-        widget.online,
+        "",
+        "",
         currentDirectory,
         offlineWhiteboards,
         offlineWhiteboardIds,
@@ -93,18 +87,18 @@ class _FileManagerState extends State<FileManager> {
         offlineWhiteboards,
         offlineWhiteboardIds,
         currentDirectory,
-        widget.authToken,
-        widget.id,
-        widget.online,
+        "",
+        "",
+        true,
         _refreshController);
     FileActionManager.mapOfflineWhiteboards(
         context,
         directoryAndWhiteboardButtons,
         offlineWhiteboards,
         fileIconSize,
-        widget.authToken,
-        widget.id,
-        widget.online,
+        "",
+        "",
+        true,
         _refreshController,
         offlineWhiteboardIds);
 
@@ -134,9 +128,9 @@ class _FileManagerState extends State<FileManager> {
               controller: _refreshController,
               onRefresh: () async {
                 await WhiteboardDataManager.getDirectoriesAndWhiteboards(
-                    widget.online,
+                    false,
                     currentDirectory,
-                    widget.authToken,
+                    "",
                     _refreshController,
                     directories,
                     whiteboards,
@@ -155,12 +149,7 @@ class _FileManagerState extends State<FileManager> {
                     this.offlineWhiteboards = offlineWhiteboards;
                   });
                 });
-                if (widget.online)
-                  WebDavManager.startAutomatedUpload(
-                      await WhiteboardDataManager.getAllOfflineWhiteboards(
-                          this.offlineWhiteboardIds),
-                      await WhiteboardDataManager.getAllDirectories(
-                          widget.authToken));
+
               },
               child: GridView.extent(
                 maxCrossAxisExtent: 200,
@@ -170,12 +159,10 @@ class _FileManagerState extends State<FileManager> {
 
     Widget actionButtons = Expanded(
       child: ActionButtons(
-          widget.authToken,
           currentDirectory,
           _refreshController,
           offlineWhiteboards,
           offlineWhiteboardIds,
-          widget.online,
           directories),
     );
 
@@ -185,16 +172,16 @@ class _FileManagerState extends State<FileManager> {
           return Scaffold(
               appBar: AppBar(
                   title: Row(
-                    children: [Text("Dashboard"), actionButtons],
+                    children: [Text(AppLocalizations.of(context)!.dashboard), actionButtons],
                   ),
-                  actions: [EasyDynamicThemeBtn(), AvatarIcon(widget.online)]),
+                  actions: [EasyDynamicThemeBtn(), AvatarIcon()]),
               body: body);
         } else {
           return Scaffold(
               appBar: AppBar(
                   title: Row(
                     children: [
-                      Text("Dashboard"),
+                      Text(AppLocalizations.of(context)!.dashboard),
                     ],
                   ),
                   bottom: PreferredSize(
@@ -202,7 +189,7 @@ class _FileManagerState extends State<FileManager> {
                     // you can put any value here
                     child: actionButtons,
                   ),
-                  actions: [EasyDynamicThemeBtn(), AvatarIcon(widget.online)]),
+                  actions: [EasyDynamicThemeBtn(), AvatarIcon()]),
               body: body);
         }
       },

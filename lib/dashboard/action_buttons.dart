@@ -12,20 +12,17 @@ import 'filemanager/file_manager_types.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ActionButtons extends StatefulWidget {
-  final String authToken, parent;
+  final String parent;
   final RefreshController _refreshController;
   final OfflineWhiteboards offlineWhiteboards;
   final Set<String> offlineWhiteboardIds;
-  final bool online;
   final Directories directories;
 
   ActionButtons(
-      this.authToken,
       this.parent,
       this._refreshController,
       this.offlineWhiteboards,
       this.offlineWhiteboardIds,
-      this.online,
       this.directories);
 
   @override
@@ -43,13 +40,13 @@ class _ActionButtonsState extends State<ActionButtons> {
   Widget build(BuildContext context) {
     Widget buttons = Row(
       children: [
-        if (widget.online)
+        /*if (widget.online)
           Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: OutlinedButton(
                   style: outlineButtonStyle,
                   onPressed: _createWhiteboard,
-                  child: Text(AppLocalizations.of(context)!.createWhiteboard))),
+                  child: Text(AppLocalizations.of(context)!.createWhiteboard))),*/
         Padding(
             padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: OutlinedButton(
@@ -62,7 +59,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                 style: outlineButtonStyle,
                 onPressed: _createFolder,
                 child: Text(AppLocalizations.of(context)!.createFolder))),
-        if (widget.online)
+        /*if (widget.online)
           Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: OutlinedButton(
@@ -75,7 +72,7 @@ class _ActionButtonsState extends State<ActionButtons> {
               child: OutlinedButton(
                   style: outlineButtonStyle,
                   onPressed: _importWhiteboard,
-                  child: Text(AppLocalizations.of(context)!.importWhiteboard))),
+                  child: Text(AppLocalizations.of(context)!.importWhiteboard))),*/
       ],
     );
 
@@ -92,16 +89,14 @@ class _ActionButtonsState extends State<ActionButtons> {
       context,
       MaterialPageRoute<void>(
         builder: (BuildContext context) => AddFolder(
-            widget.authToken,
             widget.parent,
             widget._refreshController,
-            widget.directories,
-            widget.online),
+            widget.directories),
       ),
     );
   }
 
-  _createWhiteboard() {
+  /*_createWhiteboard() {
     Navigator.push(
       context,
       MaterialPageRoute<void>(
@@ -109,14 +104,13 @@ class _ActionButtonsState extends State<ActionButtons> {
             widget.authToken, widget.parent, widget._refreshController),
       ),
     );
-  }
+  }*/
 
   _createOfflineWhiteboard() {
     Navigator.push(
       context,
       MaterialPageRoute<void>(
         builder: (BuildContext context) => AddOfflineWhiteboard(
-            widget.authToken,
             widget.parent,
             widget._refreshController,
             widget.offlineWhiteboards,
@@ -125,7 +119,7 @@ class _ActionButtonsState extends State<ActionButtons> {
     );
   }
 
-  _collabOnWhiteboard() {
+  /*_collabOnWhiteboard() {
     Navigator.push(
       context,
       MaterialPageRoute<void>(
@@ -133,9 +127,9 @@ class _ActionButtonsState extends State<ActionButtons> {
             widget.authToken, widget.parent, widget._refreshController),
       ),
     );
-  }
+  }*/
 
-  _importWhiteboard() async {
+/*_importWhiteboard() async {
     List<FilePickerCross> results =
         await FilePickerCross.importMultipleFromStorage();
     await fileManagerStorage.ready;
@@ -162,5 +156,5 @@ class _ActionButtonsState extends State<ActionButtons> {
           "indexes", jsonEncode(offlineWhiteboardIds.toList()));
       widget._refreshController.requestRefresh();
     }
-  }
+  }*/
 }

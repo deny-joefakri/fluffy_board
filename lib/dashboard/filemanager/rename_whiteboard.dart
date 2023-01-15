@@ -10,13 +10,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RenameWhiteboard extends StatefulWidget {
-  final String authToken;
   final String directory;
   final String id;
   final String currentName;
   final RefreshController _refreshController;
 
-  RenameWhiteboard(this.authToken, this.id, this.directory, this.currentName, this._refreshController);
+  RenameWhiteboard(this.id, this.directory, this.currentName, this._refreshController);
 
   @override
   _RenameWhiteboardState createState() => _RenameWhiteboardState();
@@ -38,14 +37,12 @@ class _RenameWhiteboardState extends State<RenameWhiteboard> {
                   return (FractionallySizedBox(
                       widthFactor: 0.5,
                       child: RenameWhiteboardForm(
-                          widget.authToken,
                           widget.id,
                           widget.directory,
                           widget.currentName,
                           widget._refreshController)));
                 } else {
                   return (RenameWhiteboardForm(
-                      widget.authToken,
                       widget.id,
                       widget.directory,
                       widget.currentName,
@@ -59,14 +56,12 @@ class _RenameWhiteboardState extends State<RenameWhiteboard> {
 }
 
 class RenameWhiteboardForm extends StatefulWidget {
-  final String authToken;
   final String directory;
   final String id;
   final String currentName;
   final RefreshController _refreshController;
 
-  RenameWhiteboardForm(
-      this.authToken, this.id, this.directory, this.currentName, this._refreshController);
+  RenameWhiteboardForm(this.id, this.directory, this.currentName, this._refreshController);
 
   @override
   _RenameWhiteboardFormState createState() => _RenameWhiteboardFormState();
@@ -128,7 +123,7 @@ class _RenameWhiteboardFormState extends State<RenameWhiteboardForm> {
       // you'd often call a server or save the information in a database.
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Trying to rename whiteboard ...')));
-      try {
+      /*try {
         http.Response response = await http.post(
             Uri.parse((settingsStorage.getItem("REST_API_URL") ?? dotenv.env['REST_API_URL']!) +
                 "/filemanager/whiteboard/rename"),
@@ -151,7 +146,7 @@ class _RenameWhiteboardFormState extends State<RenameWhiteboardForm> {
       } catch (e) {
         print(e);
         _showError();
-      }
+      }*/
     }
   }
 }

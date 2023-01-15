@@ -11,8 +11,6 @@ typedef OnOfflineBookMarkAdd = Function(Bookmark);
 typedef OnBookMarkAdd = Function(Bookmark);
 
 class AddBookmark extends StatefulWidget {
-  final String authToken;
-  final bool online;
   final WebsocketConnection? websocketConnection;
   final Offset offset;
   final double scale;
@@ -21,8 +19,6 @@ class AddBookmark extends StatefulWidget {
   final OnOfflineBookMarkAdd offlineBookMarkAdd;
 
   AddBookmark(
-      this.authToken,
-      this.online,
       this.websocketConnection,
       this.offset,
       this.scale,
@@ -50,8 +46,6 @@ class _AddBookmarkState extends State<AddBookmark> {
                   return (FractionallySizedBox(
                       widthFactor: 0.5,
                       child: AddBookmarkForm(
-                          widget.authToken,
-                          widget.online,
                           widget.websocketConnection,
                           widget.offset,
                           widget.scale,
@@ -60,8 +54,6 @@ class _AddBookmarkState extends State<AddBookmark> {
                           widget.offlineBookMarkAdd)));
                 } else {
                   return (AddBookmarkForm(
-                      widget.authToken,
-                      widget.online,
                       widget.websocketConnection,
                       widget.offset,
                       widget.scale,
@@ -77,8 +69,6 @@ class _AddBookmarkState extends State<AddBookmark> {
 }
 
 class AddBookmarkForm extends StatefulWidget {
-  final String authToken;
-  final bool online;
   final WebsocketConnection? websocketConnection;
   final Offset offset;
   final double scale;
@@ -87,8 +77,6 @@ class AddBookmarkForm extends StatefulWidget {
   final OnOfflineBookMarkAdd onOfflineBookMarkAdd;
 
   AddBookmarkForm(
-      this.authToken,
-      this.online,
       this.websocketConnection,
       this.offset,
       this.scale,
@@ -154,12 +142,13 @@ class _AddBookmarkFormState extends State<AddBookmarkForm> {
           SnackBar(content: Text('Trying to create bookmark ...')));
       Bookmark bookmark = new Bookmark(
           uuid.v4(), nameController.text, widget.offset, widget.scale);
-      if (widget.online && widget.websocketConnection != null) {
+      /*if (widget.online && widget.websocketConnection != null) {
         widget.onBookMarkAdd(bookmark);
         WebsocketSend.sendBookmarkAdd(bookmark, widget.websocketConnection);
       } else {
         widget.onOfflineBookMarkAdd(bookmark);
-      }
+      }*/
+      widget.onOfflineBookMarkAdd(bookmark);
       widget.refreshController.requestRefresh();
       Navigator.pop(context);
     }

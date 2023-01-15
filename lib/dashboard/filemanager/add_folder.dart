@@ -12,14 +12,12 @@ import 'file_manager_types.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddFolder extends StatefulWidget {
-  final String authToken;
   final String parent;
   final RefreshController _refreshController;
   final Directories directories;
-  final bool online;
 
-  AddFolder(this.authToken, this.parent, this._refreshController,
-      this.directories, this.online);
+  AddFolder(this.parent, this._refreshController,
+      this.directories);
 
   @override
   _AddFolderState createState() => _AddFolderState();
@@ -41,18 +39,14 @@ class _AddFolderState extends State<AddFolder> {
                   return (FractionallySizedBox(
                       widthFactor: 0.5,
                       child: AddFolderForm(
-                          widget.authToken,
                           widget.parent,
                           widget._refreshController,
-                          widget.directories,
-                          widget.online)));
+                          widget.directories)));
                 } else {
                   return (AddFolderForm(
-                      widget.authToken,
                       widget.parent,
                       widget._refreshController,
-                      widget.directories,
-                      widget.online));
+                      widget.directories));
                 }
               },
             ),
@@ -62,14 +56,12 @@ class _AddFolderState extends State<AddFolder> {
 }
 
 class AddFolderForm extends StatefulWidget {
-  final String authToken;
   final String parent;
   final RefreshController _refreshController;
   final Directories directories;
-  final bool online;
 
-  AddFolderForm(this.authToken, this.parent, this._refreshController,
-      this.directories, this.online);
+  AddFolderForm(this.parent, this._refreshController,
+      this.directories);
 
   @override
   _AddFolderFormState createState() => _AddFolderFormState();
@@ -134,45 +126,19 @@ class _AddFolderFormState extends State<AddFolderForm> {
       // you'd often call a server or save the information in a database.
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.tryingCreateFolder)));
-      if (widget.online) {
-        try {
-          http.Response response = await http.post(
-              Uri.parse((settingsStorage.getItem("REST_API_URL") ?? dotenv.env['REST_API_URL']!) +
-                  "/filemanager/directory/create"),
-              headers: {
-                "content-type": "application/json",
-                "accept": "application/json",
-                'Authorization': 'Bearer ' + widget.authToken,
-              },
-              body: jsonEncode({
-                'filename': nameController.text,
-                'parent': widget.parent,
-              }));
-          if (response.statusCode == 200) {
-            Navigator.pop(context);
-            widget._refreshController.requestRefresh();
-          } else {
-            _showError();
-          }
-        } catch (e) {
-          print(e);
-          _showError();
-        }
-      } else {
-        await storage.ready;
-        widget.directories.list.add(new Directory(
-            uuid.v4(),
-            storage.getItem('id') ?? "",
-            widget.parent,
-            nameController.text,
-            DateTime.now().millisecond));
-        fileManagerStorage
-            .setItem("directories", widget.directories.toJSONEncodable())
-            .then((value) => {
-                  Navigator.pop(context),
-                  widget._refreshController.requestRefresh()
-                });
-      }
+      await storage.ready;
+      widget.directories.list.add(new Directory(
+          uuid.v4(),
+          storage.getItem('id') ?? "",
+          widget.parent,
+          nameController.text,
+          DateTime.now().millisecond));
+      fileManagerStorage
+          .setItem("directories", widget.directories.toJSONEncodable())
+          .then((value) => {
+        Navigator.pop(context),
+        widget._refreshController.requestRefresh()
+      });
     }
   }
 }

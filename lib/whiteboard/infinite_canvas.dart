@@ -44,7 +44,6 @@ class InfiniteCanvasPage extends StatefulWidget {
   final OnUploadsChange onUploadsChange;
   final OnTextItemsChange onTextItemsChange;
   final WebsocketConnection? websocketConnection;
-  final String authToken;
   final String id;
   final OnSaveOfflineWhiteboard onSaveOfflineWhiteboard;
   final OnDontFollow onDontFollow;
@@ -67,7 +66,6 @@ class InfiniteCanvasPage extends StatefulWidget {
       required this.onUploadsChange,
       required this.onTextItemsChange,
       required this.websocketConnection,
-      required this.authToken,
       required this.id,
       required this.onSaveOfflineWhiteboard,
       required this.onDontFollow,
